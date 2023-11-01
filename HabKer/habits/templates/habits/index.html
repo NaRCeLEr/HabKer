@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% load static %}
+
+    <div class="task_block">
+    {% for task in tasks %}
+        {% if task.done == False %}
+            <div class="task_item not_completed" id="{{ task.pk }}">
+                <h4>{{ task.habit.title }}</h4>
+                <div class="task_funcs">
+                    <button value="{{ task.pk }}" type="button" class="completes-img" onclick="complete(this)"><img src="{% static 'habits/img/completed.png' %}"></button>
+                </div>
+            </div>
+        {% else %}
+            <div class="task_item completed" id="{{ task.pk }}">
+                <h4>{{ task.habit.title }}</h4>
+            </div>
+        {% endif %}
+    {% endfor %}
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        function complete(el) {
+            let pk = el.value
+            document.getElementById(`${pk}`).classList.add('completed')
+            el.classList.add('hidden')
+
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'complete' %}",
+                data: {
+                    'completed': true,
+                    'pk': pk,
+
+                    success: () => {
+                        console.log('ok')
+                    }
+                }
+            });
+        }
+    </script>
+
+{% endblock %}

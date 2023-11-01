@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% load static %}
+
+{% for habit in habits %}
+    <div class="habits_block">
+        <h2>{{ habit.title }}</h2>
+
+        <div class="task_block-p">
+        {% for task in habit.taskmodel_set.all %}
+            {% if task.done %}
+                <div class="task_item-p completed" id="{{ task.pk }}">
+                    <h4>{{ task.task_date.day }}</h4>
+                </div>
+            {% else %}
+                <div class="task_item-p not_completed" id="{{ task.pk }}">
+                    <h4>{{ task.task_date.day }}</h4>
+                </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
+{% endfor %}
+
+{% endblock %}
